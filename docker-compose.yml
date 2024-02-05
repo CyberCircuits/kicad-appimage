@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  kicad:
+    platform: linux/amd64
+    image: kicad-appimage:7.0.10
+    build: .
+    volumes:
+      - .:/kicad-appimage
+    working_dir: /kicad-appimage
+    privileged: true
