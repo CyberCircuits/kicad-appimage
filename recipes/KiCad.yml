@@ -11,42 +11,17 @@ ingredients:
     - kicad-templates
     - libcurl4
     - libpython3.8
-    #~ - libpango-1.0-0
-    #~ - libpangoft2-1.0-0
-    #~ - libpangocairo-1.0-0
-    #~ - python3.8
-    #~ - libjpeg-turbo8
-    #~ - libtiff5
-    #~ - libwebp-dev
-    #~ - libc6
-    #~ - libexpat1
-    #~ - libpython3.8-stdlib
-    #~ - zlib1g
-    #~ - kicad
-#  exclude:
-    #~ - kicad-demos
-    #~ - kicad-doc-en
-#    - kicad-packages3d
-    #~ - kicad-symbols
-    #~ - kicad-footprints
+
 # Mimimum supported version is Ubuntu 20.04
   dist: focal
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ focal main universe
-#    - deb https://ppa.launchpadcontent.net/kicad/kicad-7.0-releases/ubuntu focal main
-#    - deb http://ppa.launchpad.net/kicad/kicad-7.0-releases/ubuntu
-#    - deb https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu focal main
   ppas:
     - kicad/kicad-7.0-releases
-    #~ - deadsnakes/ppa
 
 script:
   # Remove any previous build
   - rm -rf KiCad
-  #~ - cp /usr/lib/x86_64-linux-gnu/libpython3.8.so.1.0 ./usr/lib/x86_64-linux-gnu/
-  #~ - cp /usr/lib/x86_64-linux-gnu/libjpeg.so.8 ./usr/lib/x86_64-linux-gnu/
-  #~ - cp /usr/lib/x86_64-linux-gnu/libtiff.so.5 ./usr/lib/x86_64-linux-gnu/
-  #~ - cp /usr/lib/x86_64-linux-gnu/libwebp.so ./usr/lib/x86_64-linux-gnu/libwebp.so.6
   - cp /lib/x86_64-linux-gnu/libpango-1.0.so.0 ./lib/x86_64-linux-gnu/libpango-1.0.so.0
   - cp /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0
   - cp /usr/lib/x86_64-linux-gnu/libgtk-3.so.0 ./usr/lib/x86_64-linux-gnu/libgtk-3.so.0
