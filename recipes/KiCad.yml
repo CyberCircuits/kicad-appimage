@@ -17,7 +17,7 @@ ingredients:
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ focal main universe
   ppas:
-    - kicad/kicad-7.0-releases
+    - kicad/kicad-8.0-releases
 
 script:
   # Remove any previous build
