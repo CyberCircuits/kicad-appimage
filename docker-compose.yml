@@ -2,7 +2,7 @@ version: "3.9"
 services:
   kicad:
     platform: linux/amd64
-    image: kicad-appimage:7.0.10
+    image: kicad-appimage:8.0.0
     build: .
     volumes:
       - .:/kicad-appimage

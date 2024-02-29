@@ -7,7 +7,6 @@ base: build
 3d: build
 	@sed -i '/kicad-packages3d/c\    - kicad-packages3d' recipes/KiCad.yml
 	@../pkg2appimage--x86_64.AppImage recipes/KiCad.yml
-#~  	@mv ./out/KiCad*.AppImage ./out/$(shell basename -s AppImage ./out/KiCad*.AppImage)3d.AppImage
 	@mv ./out ./build/$@
 	@sed -i '/kicad-packages3d/c\#    - kicad-packages3d' recipes/KiCad.yml
 
