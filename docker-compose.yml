@@ -5,6 +5,6 @@ services:
     image: kicad-appimage:8.0.0
     build: .
     volumes:
-      - .:/kicad-appimage
-    working_dir: /kicad-appimage
+      - .:/appimage
+    working_dir: /appimage
     privileged: true

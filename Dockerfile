@@ -15,9 +15,13 @@ RUN apt update \
     libjpeg-turbo8 \
     libtiff5 \
     libwebp-dev \
-    libpango-1.0-0 libpangoft2-1.0-0 \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
     libgtk-3-0 \
-    libglib2.0-dev
+    libglib2.0-dev \
+    libglu1-mesa \
+    libsm6 \
+    libopengl0
 
 RUN curl -s https://api.github.com/repos/AppImageCommunity/pkg2appimage/releases \
   | grep "browser_download_url.*AppImage" \
