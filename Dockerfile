@@ -11,10 +11,6 @@ RUN apt update \
     file \
     binutils \
     python3.8 \
-    libpython3.8 \
-    libjpeg-turbo8 \
-    libtiff5 \
-    libwebp-dev \
     libpango-1.0-0 \
     libpangoft2-1.0-0 \
     libgtk-3-0 \

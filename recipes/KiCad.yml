@@ -11,20 +11,23 @@ ingredients:
     - kicad-templates
     - libcurl4
     - libpython3.8
+    - libwxgtk-webview3.0-gtk3
+    - libwxgtk-media3.0-gtk3
+    - python3-wxgtk4.0
+    - python3-sip
 
 # Mimimum supported version is Ubuntu 20.04
   dist: focal
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ focal main universe
   ppas:
-    - kicad/kicad-8.0-releases
+    - kicad/kicad-6.0-releases
 
 script:
   # Remove any previous build
   - rm -rf KiCad
   - cp /lib/x86_64-linux-gnu/libpango-1.0.so.0 ./lib/x86_64-linux-gnu/libpango-1.0.so.0
   - cp /usr/lib/x86_64-linux-gnu/lib*.so.* ./usr/lib/x86_64-linux-gnu/
-  - cp -r /usr/lib/python3/ ./usr/lib/
   - cp -r /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0 ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0
   - cp -r /usr/lib/x86_64-linux-gnu/dri/ ./usr/lib/
   - # Workaround until
@@ -35,10 +38,10 @@ script:
   - export LD_LIBRARY_PATH="${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib/:"${HERE}"/lib/:$LD_LIBRARY_PATH
   - cd "${HERE}/usr"
   - unset GTK3_MODULES
-  - export KICAD8_3DMODEL_DIR="${HERE}/usr/share/kicad/3dmodels"
-  - export KICAD8_FOOTPRINT_DIR="${HERE}/usr/share/kicad/footprints"
-  - export KICAD8_SYMBOL_DIR="${HERE}/usr/share/kicad/symbols"
-  - export KICAD8_TEMPLATE_DIR="${HERE}/usr/share/kicad/template"
+  - export KICAD6_3DMODEL_DIR="${HERE}/usr/share/kicad/3dmodels"
+  - export KICAD6_FOOTPRINT_DIR="${HERE}/usr/share/kicad/footprints"
+  - export KICAD6_SYMBOL_DIR="${HERE}/usr/share/kicad/symbols"
+  - export KICAD6_TEMPLATE_DIR="${HERE}/usr/share/kicad/template"
   - exec "./bin/kicad" "$@"
   - EOF
   - chmod a+x ./AppRun
