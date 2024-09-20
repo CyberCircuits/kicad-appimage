@@ -26,6 +26,7 @@ script:
   - cp /usr/lib/x86_64-linux-gnu/lib*.so.* ./usr/lib/x86_64-linux-gnu/
   - cp -r /usr/lib/python3/ ./usr/lib/
   - cp -r /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0 ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0
+  - cp -r /usr/lib/x86_64-linux-gnu/dri/ ./usr/lib/
   - # Workaround until
   - # AppRun.c exports rather than just sets environment variables
   - cat > ./AppRun <<\EOF
