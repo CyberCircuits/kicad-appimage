@@ -15,6 +15,8 @@ ingredients:
     - libwxgtk-media3.0-gtk3
     - python3-wxgtk4.0
     - python3-sip
+    - libsm6
+    - libopengl0
 
 # Mimimum supported version is Ubuntu 20.04
   dist: focal
@@ -27,15 +29,24 @@ script:
   # Remove any previous build
   - rm -rf KiCad
   - cp /lib/x86_64-linux-gnu/libpango-1.0.so.0 ./lib/x86_64-linux-gnu/libpango-1.0.so.0
-  - cp /usr/lib/x86_64-linux-gnu/lib*.so.* ./usr/lib/x86_64-linux-gnu/
+  - cp /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libgtk-3.so.0 ./usr/lib/x86_64-linux-gnu/libgtk-3.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 ./usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libcairo*.so.* ./usr/lib/x86_64-linux-gnu/
   - cp -r /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0 ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0
-  - cp -r /usr/lib/x86_64-linux-gnu/dri/ ./usr/lib/
+  - cp /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 ./usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libgdk-3.so.0 ./usr/lib/x86_64-linux-gnu/libgdk-3.so.0
+  - cp /usr/lib/x86_64-linux-gnu/librsvg-2.so.2 ./usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+  # Fix for Fedora 40
+  - cp /usr/lib/x86_64-linux-gnu/libatspi.so.0 ./usr/lib/x86_64-linux-gnu/libatspi.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libatk-1.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0
   - # Workaround until
   - # AppRun.c exports rather than just sets environment variables
   - cat > ./AppRun <<\EOF
   - #!/bin/sh
   - HERE="$(dirname "$(readlink -f "${0}")")"
-  - export LD_LIBRARY_PATH="${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib/:"${HERE}"/lib/:$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib/:"${HERE}"/lib/:/usr/lib/x86_64-linux-gnu/dri:/usr/lib64/dri/:/$LD_LIBRARY_PATH
   - cd "${HERE}/usr"
   - unset GTK3_MODULES
   - export KICAD6_3DMODEL_DIR="${HERE}/usr/share/kicad/3dmodels"

@@ -14,10 +14,7 @@ RUN apt update \
     libpango-1.0-0 \
     libpangoft2-1.0-0 \
     libgtk-3-0 \
-    libglib2.0-dev \
-    libglu1-mesa \
-    libsm6 \
-    libopengl0
+    libglib2.0-dev
 
 RUN curl -s https://api.github.com/repos/AppImageCommunity/pkg2appimage/releases \
   | grep "browser_download_url.*AppImage" \
