@@ -1,9 +1,7 @@
-version: "3.9"
 services:
-  kicad:
+  dev:
     platform: linux/amd64
-    image: kicad-appimage:8.0.0
-    build: .
+    build: ./
     volumes:
       - .:/appimage
     working_dir: /appimage

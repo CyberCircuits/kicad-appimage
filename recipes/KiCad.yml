@@ -23,10 +23,19 @@ script:
   # Remove any previous build
   - rm -rf KiCad
   - cp /lib/x86_64-linux-gnu/libpango-1.0.so.0 ./lib/x86_64-linux-gnu/libpango-1.0.so.0
-  - cp /usr/lib/x86_64-linux-gnu/lib*.so.* ./usr/lib/x86_64-linux-gnu/
+  - cp /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libgtk-3.so.0 ./usr/lib/x86_64-linux-gnu/libgtk-3.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 ./usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libcairo*.so.* ./usr/lib/x86_64-linux-gnu/
   - cp -r /usr/lib/python3/ ./usr/lib/
   - cp -r /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0 ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0
-  - cp -r /usr/lib/x86_64-linux-gnu/dri/ ./usr/lib/
+  - cp /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 ./usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libgdk-3.so.0 ./usr/lib/x86_64-linux-gnu/libgdk-3.so.0
+  - cp /usr/lib/x86_64-linux-gnu/librsvg-2.so.2 ./usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+  # Fix for Fedora 40
+  - cp /usr/lib/x86_64-linux-gnu/libatspi.so.0 ./usr/lib/x86_64-linux-gnu/libatspi.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libatk-1.0.so.0
+  - cp /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0
   - # Workaround until
   - # AppRun.c exports rather than just sets environment variables
   - cat > ./AppRun <<\EOF
@@ -39,6 +48,11 @@ script:
   - export KICAD8_FOOTPRINT_DIR="${HERE}/usr/share/kicad/footprints"
   - export KICAD8_SYMBOL_DIR="${HERE}/usr/share/kicad/symbols"
   - export KICAD8_TEMPLATE_DIR="${HERE}/usr/share/kicad/template"
-  - exec "./bin/kicad" "$@"
+  - if [ ! -z "$1" ] && [ -e "${HERE}/usr/bin/$1" ]; then
+  -   EXEC="${HERE}/usr/bin/$1"; shift
+  - else
+  -   EXEC="${HERE}/usr/bin/kicad"
+  - fi
+  - exec "${EXEC}" "$@"
   - EOF
   - chmod a+x ./AppRun
