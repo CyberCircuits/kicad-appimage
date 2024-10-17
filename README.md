@@ -31,7 +31,13 @@ sudo apt install libfuse2
 
 ## Usage
 
-To access internal binaries in KiCad, provide the executable name as the first argument. For example, to use the KiCad command-line interface, type `KiCad-xxx.AppImage kicad-cli`, where `xxx` represents the version number.
+To access internal binaries in KiCad, provide the executable name as the first argument.
+
+For example, to use the KiCad command-line interface, type `./KiCad-xxx.AppImage kicad-cli`, where `xxx` represents the version number.
+
+To open standalone Schematic editor type `./KiCad-xxx.AppImage eeschema <path/to/file.kicad_sch>`
+
+To open standalone PCB editor type `./KiCad-xxx.AppImage pcbnew <path/to/file.kicad_pcb>`
 
 List of accessible binaries:
 - bitmap2component
