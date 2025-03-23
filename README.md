@@ -1,6 +1,6 @@
 # KiCad AppImages
 
-These AppImages were built on a Dockerized Ubuntu 20.04 and tested on Ubuntu 22.04, Debian 12, Fedora 38 and Fedora 40.
+These AppImages were built on a Dockerized Ubuntu 20.04 and tested on Ubuntu 22.04, Debian 12 (Xfce), Fedora 38 and Fedora 40.
 
 ## Build
 

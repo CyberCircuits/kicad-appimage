@@ -36,6 +36,10 @@ script:
   - cp /usr/lib/x86_64-linux-gnu/libatspi.so.0 ./usr/lib/x86_64-linux-gnu/libatspi.so.0
   - cp /usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libatk-1.0.so.0
   - cp /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0
+  # Fix for Debian 12 KDE
+  - update-mime-database ./usr/share/mime
+  - chmod 644 ./usr/share/mime/mime.cache
+  - /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders --update-cache
   - # Workaround until
   - # AppRun.c exports rather than just sets environment variables
   - cat > ./AppRun <<\EOF
