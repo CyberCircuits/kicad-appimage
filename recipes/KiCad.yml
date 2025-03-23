@@ -9,6 +9,7 @@ ingredients:
 #    - kicad-packages3d
     - kicad-symbols
     - kicad-templates
+    - libngspice0-kicad
     - libcurl4
     - libpython3.8
 
