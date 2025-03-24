@@ -13,12 +13,12 @@ ingredients:
     - libcurl4
     - libpython3.8
 
-# Mimimum supported version is Ubuntu 20.04
-  dist: focal
+# Mimimum supported version is Ubuntu 22.04
+  dist: jammy
   sources:
-    - deb http://us.archive.ubuntu.com/ubuntu/ focal main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ jammy main universe
   ppas:
-    - kicad/kicad-8.0-releases
+    - kicad/kicad-9.0-releases
 
 script:
   # Remove any previous build
@@ -37,7 +37,7 @@ script:
   - cp /usr/lib/x86_64-linux-gnu/libatspi.so.0 ./usr/lib/x86_64-linux-gnu/libatspi.so.0
   - cp /usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libatk-1.0.so.0
   - cp /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 ./usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0
-  # Fix for Debian 12 KDE
+  # Fix for KDE
   - update-mime-database ./usr/share/mime
   - chmod 644 ./usr/share/mime/mime.cache
   - /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders --update-cache
@@ -49,10 +49,12 @@ script:
   - export LD_LIBRARY_PATH="${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib/:"${HERE}"/lib/:$LD_LIBRARY_PATH
   - cd "${HERE}/usr"
   - unset GTK3_MODULES
-  - export KICAD8_3DMODEL_DIR="${HERE}/usr/share/kicad/3dmodels"
-  - export KICAD8_FOOTPRINT_DIR="${HERE}/usr/share/kicad/footprints"
-  - export KICAD8_SYMBOL_DIR="${HERE}/usr/share/kicad/symbols"
-  - export KICAD8_TEMPLATE_DIR="${HERE}/usr/share/kicad/template"
+  - export KICAD9_3DMODEL_DIR="${HERE}/usr/share/kicad/3dmodels"
+  - export KICAD9_FOOTPRINT_DIR="${HERE}/usr/share/kicad/footprints"
+  - export KICAD9_SYMBOL_DIR="${HERE}/usr/share/kicad/symbols"
+  - export KICAD9_TEMPLATE_DIR="${HERE}/usr/share/kicad/template"
+  - export KICAD9_DESIGN_BLOCK_DIR="${HERE}/usr/share/kicad/blocks"
+  - export PYTHONPATH="${HERE}/usr/share/kicad/scripting"
   - if [ ! -z "$1" ] && [ -e "${HERE}/usr/bin/$1" ]; then
   -   EXEC="${HERE}/usr/bin/$1"; shift
   - else

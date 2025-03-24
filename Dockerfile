@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -10,8 +10,8 @@ RUN apt update \
     libfuse2 \
     file \
     binutils \
-    python3.8 \
-    libpython3.8 \
+    python3.10 \
+    libpython3.10 \
     libjpeg-turbo8 \
     libtiff5 \
     libwebp-dev \
