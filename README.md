@@ -29,6 +29,10 @@ sudo apt install libfuse2
 
 `sudo dnf install mesa-libGLU`
 
+### OpenSUSE
+
+`sudo zypper install libGLU1`
+
 ## Usage
 
 To access internal binaries in KiCad, provide the executable name as the first argument.

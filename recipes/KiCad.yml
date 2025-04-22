@@ -54,6 +54,7 @@ script:
   - export KICAD9_SYMBOL_DIR="${HERE}/usr/share/kicad/symbols"
   - export KICAD9_TEMPLATE_DIR="${HERE}/usr/share/kicad/template"
   - export KICAD9_DESIGN_BLOCK_DIR="${HERE}/usr/share/kicad/blocks"
+  - export KICAD_STOCK_DATA_HOME="${HERE}/usr/share/kicad"
   - export PYTHONPATH="${HERE}/usr/share/kicad/scripting"
   - if [ ! -z "$1" ] && [ -e "${HERE}/usr/bin/$1" ]; then
   -   EXEC="${HERE}/usr/bin/$1"; shift
