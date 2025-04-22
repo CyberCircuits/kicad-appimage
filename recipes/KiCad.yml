@@ -43,7 +43,7 @@ script:
   - /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders --update-cache
   # Pre-install KiVar backend
   - virtualenv --python=python3 ./usr
-  - ./usr/bin/pip3 install kivar
+  - ./usr/bin/pip3 install kivar kikit
   - cp -r /usr/lib/python3/ ./usr/lib/
   - # Workaround until
   - # AppRun.c exports rather than just sets environment variables
