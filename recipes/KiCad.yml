@@ -41,6 +41,10 @@ script:
   - update-mime-database ./usr/share/mime
   - chmod 644 ./usr/share/mime/mime.cache
   - /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders --update-cache
+  # Pre-install KiVar backend
+  - virtualenv --python=python3 ./usr
+  - ./usr/bin/pip3 install kivar
+  - cp -r /usr/lib/python3/ ./usr/lib/
   - # Workaround until
   - # AppRun.c exports rather than just sets environment variables
   - cat > ./AppRun <<\EOF
@@ -53,6 +57,7 @@ script:
   - export KICAD8_FOOTPRINT_DIR="${HERE}/usr/share/kicad/footprints"
   - export KICAD8_SYMBOL_DIR="${HERE}/usr/share/kicad/symbols"
   - export KICAD8_TEMPLATE_DIR="${HERE}/usr/share/kicad/template"
+  - export PYTHONPATH="${HERE}/usr/share/kicad/scripting"
   - if [ ! -z "$1" ] && [ -e "${HERE}/usr/bin/$1" ]; then
   -   EXEC="${HERE}/usr/bin/$1"; shift
   - else

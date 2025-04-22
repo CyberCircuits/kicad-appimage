@@ -23,6 +23,7 @@ RUN apt update \
     libsm6 \
     libopengl0 \
     imagemagick \
+    virtualenv \
     gir1.2-xapp-1.0 libxapp1 xapps-common python3-xapp
 
 RUN curl -s https://api.github.com/repos/AppImageCommunity/pkg2appimage/releases \
