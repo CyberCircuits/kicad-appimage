@@ -1,0 +1,167 @@
+name: Build KiCad AppImage
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-appimage:
+    runs-on: ubuntu-22.04
+    outputs:
+      kicad_version: ${{ steps.get_version.outputs.kicad_version }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            pkg2appimage_extracted
+            ~/.apt-cache
+          key: ${{ runner.os }}-build-cache-${{ hashFiles('recipes/KiCad.yml') }}
+
+      - name: Install Build Dependencies
+        run: |
+          mkdir -p ~/.apt-cache
+          sudo apt-get update
+          sudo apt-get -o dir::cache::archives="$HOME/.apt-cache" install -y -qq \
+            wget \
+            curl \
+            file \
+            binutils \
+            coreutils \
+            libfuse2 \
+            make \
+            python3.10 \
+            libpython3.10 \
+            libjpeg-turbo8 \
+            libtiff5 \
+            libwebp-dev \
+            libpango-1.0-0 \
+            libpangoft2-1.0-0 \
+            libgtk-3-0 \
+            libglib2.0-dev \
+            libglu1-mesa \
+            libsm6 \
+            libnss3 \
+            libopengl0 \
+            imagemagick \
+            gir1.2-xapp-1.0 \
+            libxapp1 \
+            xapps-common \
+            python3-xapp
+
+      - name: Clean Apt Cache for Upload
+        if: always()
+        run: |
+          sudo rm -f ~/.apt-cache/lock
+          sudo rm -rf ~/.apt-cache/partial
+
+      - name: Setup pkg2appimage
+        # Only run if the extracted folder doesn't exist from cache
+        # if: steps.cache-pkg2appimage.outputs.cache-hit != 'true'
+        run: |
+          if [ ! -d "pkg2appimage_extracted" ]; then
+            # Download URL for the pkg2appimage tool
+            RAW_URL=$(curl -s https://api.github.com/repos/AppImageCommunity/pkg2appimage/releases/tags/continuous | jq -r '.assets[] | select(.name | contains("x86_64.AppImage")) | .browser_download_url' | head -n 1)
+            URL=$(echo "$RAW_URL" | tr -d '\r' | xargs)
+
+            if [ -z "$URL" ] || [ "$URL" == "null" ]; then
+              echo "Error: Could not find download URL"
+              exit 1
+            fi
+
+            echo "Downloading from: |$URL|"
+            echo "Cleaning URL and downloading..."
+            # Using quotes around the URL variable is essential
+            curl -Lo pkg2appimage "$URL"
+            #wget -c "$URL" -O pkg2appimage
+            chmod +x pkg2appimage
+            # Verify it's a valid executable
+            ls -l pkg2appimage
+            # Extract to avoid FUSE issues in Docker/GitHub
+            ./pkg2appimage --appimage-extract
+            mv squashfs-root pkg2appimage_extracted
+          fi
+
+      - name: Build AppImage using Makefile
+        run: |
+          # Enable trace mode for the shell to see exactly where it fails
+          export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+          set -x
+
+          # We call make directly on the host runner.
+          # Ensure your Makefile is configured to use the local 'pkg2appimage'
+          # or simply run the command manually if the Makefile expects Docker.
+          #          ./pkg2appimage recipes/KiCad.yml
+          make base
+
+      - name: Extract Version
+        id: get_version
+        run: |
+          # Find the file (e.g., KiCad-9.0.1-x86_64.AppImage), but fail gracefully if not found
+          FILENAME=$(ls *.AppImage 2>/dev/null | head -n 1)
+          if [ -z "$FILENAME" ]; then
+            echo "::error::No AppImage found! Check the build logs."
+            exit 1
+          fi
+          # Uses regex to pull the version number from the filename
+          VERSION=$(echo $FILENAME | grep -oP '\d+\.\d+\.\d+' || echo "nightly")
+          echo "kicad_version=$VERSION" >> $GITHUB_OUTPUT
+          echo "filename=$FILENAME" >> $GITHUB_OUTPUT
+
+      # - name: Check Build Output
+      #   run: |
+      #     echo "Listing all AppImage files found:"
+      #     ls -lh *.AppImage
+
+      # - name: Debug - List Files
+      #   run: |
+      #     echo "Searching for AppImage files..."
+      #     find . -name "*.AppImage"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KiCad-AppImage
+          path: "*.AppImage"
+          # Ensures the workflow fails if no file is found
+          if-no-files-found: error
+          # Automatically deletes the internal artifact after 1 week
+          retention-days: 7
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "${{ steps.get_version.outputs.filename }}"
+          tag_name: "v${{ steps.get_version.outputs.kicad_version }}-${{ github.run_number }}"
+          name: "KiCad ${{ steps.get_version.outputs.kicad_version }} (Build ${{ github.run_number }})"
+          body: |
+            Automated KiCad AppImage Build.
+            - **KiCad Version:** ${{ steps.get_version.outputs.kicad_version }}
+            - **Commit:** ${{ github.sha }}
+          draft: false
+          # Mark as pre-release
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  cleanup-releases:
+    needs: build-appimage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Old Pre-Releases
+        uses: dev-drprasad/delete-older-releases@v0.3.0
+        with:
+          keep_latest: 5
+          # This only targets tags starting with the version we just built
+          # e.g., if we built 9.0.1, it only looks at v9.0.1-*, leaving v9.0.0-1 untouched
+          delete_tag_pattern: "v${{ needs.build-appimage.outputs.kicad_version }}-"
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

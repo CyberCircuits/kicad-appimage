@@ -11,9 +11,11 @@ These AppImages were built on a Dockerized Ubuntu 20.04 and tested on Ubuntu 22.
 5. `make` or `make 3d`
 
 ## Requirements
+
 Graphics-related libraries are not bundled because the display driver is built to a specific kernel version.
 
 ### Ubuntu 22.04 or later
+
 Newer Ubuntu comes preinstalled with fuse3 and libfuse3. We must install libfuse2 separately.
 
 ```
@@ -44,6 +46,7 @@ To open standalone Schematic editor type `./KiCad-xxx.AppImage eeschema <path/to
 To open standalone PCB editor type `./KiCad-xxx.AppImage pcbnew <path/to/file.kicad_pcb>`
 
 List of accessible binaries:
+
 - bitmap2component
 - eeschema
 - idf2vrml
@@ -56,9 +59,13 @@ List of accessible binaries:
 - pl_editor
 
 ## Download
+
 [![Download KiCad-AppImage](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/kicad-appimage/files/latest/download)
 
 Please see [releases](https://github.com/CyberCircuits/kicad-appimage/releases) for all available binary AppImages for download.
 
 [![Download KiCad-AppImage](https://img.shields.io/sourceforge/dt/kicad-appimage.svg)](https://sourceforge.net/projects/kicad-appimage/files/latest/download)
 
+## Automated Builds
+
+![Build Status](https://github.com/CyberCircuits/kicad-appimage/actions/workflows/build-appimage.yml/badge.svg)
